@@ -362,3 +362,22 @@ fn subcommand() {
     let cmd = args.subcommand().unwrap();
     assert_eq!(cmd, None);
 }
+
+#[test]
+fn rest_01() {
+    let args = Arguments::from_vec(to_vec(&[]));
+    assert_eq!(args.rest_os(), to_vec(&[]))
+}
+
+#[test]
+fn rest_02() {
+    let args = Arguments::from_vec(to_vec(&["-h"]));
+    assert_eq!(args.rest_os(), to_vec(&["-h"]))
+}
+
+#[test]
+fn rest_03() {
+    let vec = to_vec(&["--verbose", "install", "--version", "0.3.1", "pico-args"]);
+    let args = Arguments::from_vec(vec.clone());
+    assert_eq!(args.rest_os(), vec)
+}

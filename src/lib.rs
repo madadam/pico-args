@@ -597,6 +597,23 @@ impl Arguments {
 
         Ok(())
     }
+
+    /// Returns all the remaining arguments (flags and free) as Strings.
+    ///
+    /// # Errors
+    ///
+    /// - When any of the arguments is not a UTF-8 string.
+    pub fn rest(self) -> Result<Vec<String>, Error> {
+        self.0
+            .into_iter()
+            .map(|arg| arg.into_string().map_err(|_| Error::NonUtf8Argument))
+            .collect()
+    }
+
+    /// Returns all the remaining arguments (flags and free) as OsStrings.
+    pub fn rest_os(self) -> Vec<OsString> {
+        self.0
+    }
 }
 
 // Display::to_string() is usually inlined, so by wrapping it in a non-inlined
